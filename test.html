@@ -1,0 +1,92 @@
+<h2>Pré-installation</h2>
+<ul>
+<li><p>Créer la clé d'insall (dd)</p>
+</li>
+<li><p>Check pour uefi / bios (si <code>ls /sys/firmware/efi/efivars</code> est non
+nul, verifier sur internet que c'est bon en bios, sinon bios de
+toute façon)</p>
+</li>
+<li><p>Ping pour vérifier la co (<code>wifi-menu</code> pour le wifi)</p>
+</li>
+<li><p><code>timedatectl set-ntp true</code></p>
+</li>
+</ul>
+<h2>Partitions</h2>
+<ul>
+<li><p><code>lsblk</code></p>
+</li>
+<li><p><code>fdisk /dev/sdX</code> pour avoir un prompt fdisk</p>
+</li>
+<li><p>Dans le prompt fdisk, <code>p</code> pour afficher le contenu du disque, tout
+supprimer avec <code>d</code> (un <code>d</code> par partition)</p>
+</li>
+<li><p>Créer avec <code>n</code>, <code>primary</code> et <code>first sector</code> par défaut, une
+partition de boot de <code>+200M</code>, une partition de swap de 150% de la
+ram de la machine (prévoir upgrades potentiels), une partition de
+root pour installer des programmes de taille raisonnable genre 50go
+et une partition de home avec le reste du disque (juste appuyer sur
+entrée pour la taille).</p>
+</li>
+<li><p><code>w</code> pour écrire quand c'est sur que c'est bon</p>
+</li>
+</ul>
+<p><img src="2020-03-20-015607_469x101_scrot.png" alt="screenshot" /></p>
+<ul>
+<li>Créer des filesystems sur boot, root et home :</li>
+</ul>
+<p><code>mkfs.ext4 /dev/sdX1</code>
+<code>mkfs.ext4 /dev/sdX3</code>
+<code>mkfs.ext4 /dev/sdX4</code></p>
+<ul>
+<li>Swap :</li>
+</ul>
+<p><code>mkswap /dev/sdX2</code>
+<code>swapon /dev/sdX2</code></p>
+<ul>
+<li>Monter les partitions :</li>
+</ul>
+<p><code>mount /dev/sdX3 /mnt</code>
+<code>mkdir /mnt/home</code>
+<code>mkdir /mnt/boot</code>
+<code>mount /dev/sdX1 /mnt/boot</code>
+<code>mount /dev/sdX4 /mnt/home</code></p>
+<h2>Installation</h2>
+<p><code>vim /etc/pacman.d/mirrorlist</code>
+(mettre le premier mirroir francais en haut)</p>
+<p><code>pacstrap /mnt base base-devel vim linux networkmanager grub</code></p>
+<p><code>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</code></p>
+<p>Passer de l'usb au disque dur:
+<code>arch-chroot /mnt</code></p>
+<p>Activer NetworkManager:
+<code>systemctl enable NetworkManager</code></p>
+<p><code>grub-install --target=i386-pc /dev/sdX</code>
+<code>grub-mkconfig -o /boot/grub/grub.cfg</code></p>
+<p>Changer le mot de passe de root:
+<code>passwd</code></p>
+<p>Generer les locales:
+<code>vim /etc/locale.gen</code>
+decommenter les deux lignes fr et en<em>us
+<code>locale-gen</code>
+<code>vim /etc/locale.conf</code> et y mettre `LANG=fr</em>FR.UTF-8`</p>
+<p>Timezone:
+<code>ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime</code></p>
+<p>Hostname:
+<code>vim /etc/hostname</code> et y mettre le hostname</p>
+<p>Keymap:
+<code>vim /etc/vconsole.conf</code> et y mettre <code>KEYMAP=fr</code></p>
+<p>sortir de chroot, démonter le disque et rebooter:
+<code>exit</code>
+<code>umount -R /mnt</code>
+<code>reboot</code></p>
+<h2>Post-Installation</h2>
+<p>Créer un utilisateur:
+<code>useradd -G wheel -m &lt;username&gt; -p &lt;password&gt;</code></p>
+<p>Lui donner les droits sudo:
+<code>EDITOR=vim visudo</code>
+<code>&lt;username&gt; ALL=(ALL) ALL</code></p>
+<p>La même mais sans mot de passe:
+<code>&lt;username&gt; ALL=(ALL) NOPASSWD: ALL</code></p>
+<p>Il ne suffit plus que d'installer un environnement graphique et déployer
+ses fichiers de conf et on est tout bon !
+Bon en fait en vrai c'est pas si simple mais au moins on a une install
+fonctionelle de arch !</p>
