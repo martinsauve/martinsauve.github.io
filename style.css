@@ -28,12 +28,12 @@ a {
 
 #menu {
    clear: both;
-   color: #83a598;
+   color: #458588;
    overflow: hidden;
    background-color: #282828;
    padding: 0.7ex;
    border-top: 1px solid #ccc;
-   border-bottom: 1px solid #83a598;
+   border-bottom: 1px solid #458588;
 }
 
 #menu a {
@@ -42,7 +42,7 @@ a {
 }
 
 #menu a:hover {
-   background-color: #83a598;
+   background-color: #458588;
 }
 
 #header {
