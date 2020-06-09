@@ -144,3 +144,68 @@ h4 {
 .hidden {
    display: none;
 }
+
+
+@media (max-width: 640px) {
+   * {
+      box-sizing: border-box;
+   }
+
+   body {
+      width: auto;
+      margin: 0;
+      padding: 0;
+   }
+
+   img,
+   table, 
+   td,
+   blockquote,
+   code,
+   pre,
+   textarea,
+   input,
+   iframe,
+   object,
+   embed,
+   video {
+      max-width: 100%;
+   }
+
+   img {
+      height: auto;
+   }
+
+   textarea,
+   table,
+   td,
+   th,
+   code,
+   pre,
+   samp {
+      -webkit-hyphens: auto;
+      -moz-hyphens: auto;
+      word-wrap; break-word;
+   }
+
+   code,
+   pre,
+   samp {
+      white-space: pre-wrap;
+   }
+
+
+   #nav {
+      float: none;
+      width: auto;
+      padding: 0;
+      margin: 0;
+   }
+
+   #main {
+     margin: 0 0 0 0px;
+     max-width: auto;
+     padding: 1.5em;
+
+}
+
