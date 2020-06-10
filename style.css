@@ -222,7 +222,7 @@ h4 {
 
 }
    
-@media (max-device-width: 800px) and (min-resolution: 200dpi) {
+@media (max-device-width: 800px) {
    * {
-      font-size: 150%;
+      font-size: 170%;
    }
