@@ -18,6 +18,19 @@ a {
    color: #282828;
 }
 
+ul ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul ul > li {
+    margin-left: 15px;  
+}
+
+ul ul > li::before {
+    content: "- ";
+}
+
 #header a, #nav a, #menu a {
    text-decoration: none;
 }
@@ -32,8 +45,6 @@ a {
    overflow: hidden;
    background-color: #282828;
    padding: 0.7ex;
-   border-top: 1px solid #ccc;
-   border-bottom: 1px solid #458588;
 }
 
 #menu a {
@@ -61,7 +72,7 @@ a {
 
 h1 {
    margin: 1em 1ex 0.5ex 0;
-   font-size: 1.4em;
+   font-size: 1.6em;
 }
 
 h2 {
@@ -199,8 +210,9 @@ h4 {
       float: none;
       width: auto;
       margin: 0;
-      padding: 2% 0 2% 0;
+      padding: 1% 0 2% 0;
       border-bottom: 1px dotted #ccc;
+      border-right: none;
    }
 
    #main {
