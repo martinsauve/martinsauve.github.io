@@ -1,0 +1,113 @@
+<!doctype html>
+
+<html>
+   <head>
+      <meta charset="utf-8"/>
+      <title>Martin Sauve</title>
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" type="text/css" href="/style.css"/>
+
+   </head>
+   <hr class="hidden"/>
+   <div id="menu">
+      <a href="/index.html">accueil</a>
+      <a href="/blog">blog</a>
+      <a href="/news.html">news</a>
+      <a href="/tutos"><b>tutos</b></a>
+      <span class="right">
+         <a target="_blank" rel="noopener noreferrer" href="https://github.com/martinsauve" ><span class= "fa fa-github"></span></a>
+         <a href="http://instagram.com/martinsauve" target="_blank" rel="noopener noreferrer"><span class= "fa fa-instagram"></span></a>
+      </span>
+   </div>
+   <hr class="hidden"/>
+   <div id="content">
+      <div id="nav">
+         <ul>
+            <li><a href="#pré-installation">pre_installation/</a></li>
+            <li><a href="#partitions">partitions/</a></li>
+            <li><a href="#installation">insatllation/</a></li>
+            <li><a href="#post-installation">post-installation/</a></li>
+         </ul>
+      </div>
+      <hr class="hidden"/>
+
+
+
+      <div id="main">
+         <h1 id="pré-installation">Pré-installation</h1>
+         <ul>
+         <li><p>Créer la clé d’insall (dd)</p></li>
+         <li><p>Check pour uefi / bios (si <code>ls /sys/firmware/efi/efivars</code> est non nul, verifier sur internet que c’est bon en bios, sinon bios de toute façon)</p></li>
+         <li><p>Ping pour vérifier la co (<code>wifi-menu</code> pour le wifi)</p></li>
+         <li><p><code>timedatectl set-ntp true</code></p></li>
+         </ul>
+         <h1 id="partitions">Partitions</h1>
+         <ul>
+         <li><p><code>lsblk</code></p></li>
+         <li><p><code>fdisk /dev/sdX</code> pour avoir un prompt fdisk</p></li>
+         <li><p>Dans le prompt fdisk, <code>p</code> pour afficher le contenu du disque, tout supprimer avec <code>d</code> (un <code>d</code> par partition)</p></li>
+         <li><p>Créer avec <code>n</code>, <code>primary</code> et <code>first sector</code> par défaut, une partition de boot de <code>+200M</code>, une partition de swap de 150% de la ram de la machine (prévoir upgrades potentiels), une partition de root pour installer des programmes de taille raisonnable genre 50go et une partition de home avec le reste du disque (juste appuyer sur entrée pour la taille).</p></li>
+         <li><p><code>w</code> pour écrire quand c’est sur que c’est bon</p></li>
+         </ul>
+         <figure>
+         <img src="2020-03-20-015607_469x101_scrot.png" alt="" /><figcaption>screenshot</figcaption>
+         </figure>
+         <ul>
+         <li>Créer des filesystems sur boot, root et home :</li>
+         </ul>
+         <p><code>mkfs.ext4 /dev/sdX1</code><br />
+         <code>mkfs.ext4 /dev/sdX3</code><br />
+         <code>mkfs.ext4 /dev/sdX4</code></p>
+         <ul>
+         <li>Swap :</li>
+         </ul>
+         <p><code>mkswap /dev/sdX2</code><br />
+         <code>swapon /dev/sdX2</code></p>
+         <ul>
+         <li>Monter les partitions :</li>
+         </ul>
+         <p><code>mount /dev/sdX3 /mnt</code><br />
+         <code>mkdir /mnt/home</code><br />
+         <code>mkdir /mnt/boot</code><br />
+         <code>mount /dev/sdX1 /mnt/boot</code><br />
+         <code>mount /dev/sdX4 /mnt/home</code></p>
+         <h1 id="installation">Installation</h1>
+         <p><code>vim /etc/pacman.d/mirrorlist</code><br />
+         (mettre le premier mirroir francais en haut)</p>
+         <p><code>pacstrap /mnt base base-devel vim linux networkmanager grub</code></p>
+         <p><code>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</code></p>
+         <p>Passer de l’usb au disque dur:<br />
+         <code>arch-chroot /mnt</code></p>
+         <p>Activer NetworkManager:<br />
+         <code>systemctl enable NetworkManager</code></p>
+         <p><code>grub-install --target=i386-pc /dev/sdX</code><br />
+         <code>grub-mkconfig -o /boot/grub/grub.cfg</code></p>
+         <p>Changer le mot de passe de root:<br />
+         <code>passwd</code></p>
+         <p>Generer les locales:<br />
+         <code>vim /etc/locale.gen</code><br />
+         decommenter les deux lignes fr et en_us<br />
+         <code>locale-gen</code><br />
+         <code>vim /etc/locale.conf</code> et y mettre <code>LANG=fr_FR.UTF-8</code></p>
+         <p>Timezone:<br />
+         <code>ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime</code></p>
+         <p>Hostname:<br />
+         <code>vim /etc/hostname</code> et y mettre le hostname</p>
+         <p>Keymap:<br />
+         <code>vim /etc/vconsole.conf</code> et y mettre <code>KEYMAP=fr</code></p>
+         <p>sortir de chroot, démonter le disque et rebooter:<br />
+         <code>exit</code><br />
+         <code>umount -R /mnt</code><br />
+         <code>reboot</code></p>
+         <h1 id="post-installation">Post-Installation</h1>
+         <p>Créer un utilisateur:<br />
+         <code>useradd -G wheel -m &lt;username&gt; -p &lt;password&gt;</code></p>
+         <p>Lui donner les droits sudo:<br />
+         <code>EDITOR=vim visudo</code><br />
+         <code>&lt;username&gt; ALL=(ALL) ALL</code></p>
+         <p>La même mais sans mot de passe:<br />
+         <code>&lt;username&gt; ALL=(ALL) NOPASSWD: ALL</code></p>
+         <p>Il ne suffit plus que d’installer un environnement graphique et déployer ses fichiers de conf et on est tout bon !<br />
+         Bon en fait en vrai c’est pas si simple mais au moins on a une install fonctionelle de arch !</p>
+      </div>
+</html>
