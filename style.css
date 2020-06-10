@@ -157,7 +157,7 @@ h4 {
 }
 
 
-@media (max-width: 800px) {
+@media (max-width: 7cm) {
    * {
       box-sizing: border-box;
    }
