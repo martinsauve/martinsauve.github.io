@@ -222,7 +222,8 @@ h4 {
 
 }
    
-@media (max-device-width: 800px) {
+@media (max-device-width: 750px) and (orientation: portrait) {
    * {
-      font-size: 170%;
+      font-size: 45px;
    }
+
