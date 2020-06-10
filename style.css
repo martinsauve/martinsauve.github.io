@@ -157,9 +157,7 @@ h4 {
 }
 
 
-@media (max-width: 640px),
-@media (max-device-width: 800px),
-@media handeld {
+@media (max-device-width: 800px), (max-width: 600px) {
    * {
       box-sizing: border-box;
    }
@@ -223,3 +221,9 @@ h4 {
      padding: 1.5em;
 
 }
+   
+@media (max-device-width: 750px) and (orientation: portrait) {
+   * {
+      font-size: 45px;
+   }
+
