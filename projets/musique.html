@@ -23,9 +23,9 @@
    <div id="content">
       <div id="nav">
          <ul>
-            <li><a href="/index.html"><b>a_propos/</b></a></li>
+            <li><a href="/index.html">a_propos/</a></li>
             <li><a href="/curriculum_vitae.html">curriculum_vitae/</a></li>
-            <li><a href="/projets.html">projets/</a></li>
+            <li><a href="/projets.html"><b>projets/</b></a></li>
          </ul>
       </div>
       <hr class="hidden"/>
@@ -34,16 +34,38 @@
 
       <div id="main">
          <h1 id="martin-sauve">Musique</h1>
+         <br>
          <p>J'ai réalisé de nombreuses maquettes musicales et vidéo pour des artistes Hip-Hop de ma région.</p>
-         <p>Un projet dont j'ai le droit de parler qui a été diffusé est un freestyle pour le rappeur Bazix disponible sur les plateformes de Streaming (version audio) et sur YouTube (version vidéo): 
+         <p>Un projet dont j'ai le droit de parler qui a été diffusé est un freestyle pour le rappeur Bazix disponible sur les plateformes de Streaming (version audio) et sur YouTube (version vidéo). 
          </br>
-         <a href="asdf" class="fa fa-spotify" ></a>
-         </br>
-         <a href="https://www.youtube.com/watch?v=k5PDQiiflYM" class="fa fa-youtube"></a>
-
-         </br>
-         
          </p>
+         <p>Pour ce freestyle, j'ai réalisé la captation audio et vidéo, le mixage et le mastering ainsi que le montage et la colorimétrie de l'image.</p>
+         </br>
+<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/fr/album/freestyle-1-single/1511657171?app=music"></iframe>
+
+
+<div id="ytplayer"></div>
+<script>
+  // Load the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/player_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // Replace the 'ytplayer' element with an <iframe> and
+  // YouTube player after the API code downloads.
+  var player;
+  function onYouTubePlayerAPIReady() {
+    player = new YT.Player('ytplayer', {
+      width: '400',
+      height: '220',
+      videoId: 'k5PDQiiflYM'
+    });
+  }
+</script>
+
+
+         
                   
       </div>
 
